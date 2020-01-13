@@ -1,0 +1,66 @@
+
+.title {
+   font-size: 18px;
+}
+
+.namaChannel, .deskripsi, .kometar {
+   font-size: 17px;
+}
+
+.profilePic {
+   width: 90px;
+}
+
+.channel{
+   text-align: center;
+   margin-bottom: 20px;
+}
+
+.paragraph{
+   text-align: justify;
+   font-size: 12px;
+}
+
+.commentName {
+   font-size: 15px;
+   font-weight: bold;
+}
+.comment {
+   font-size: 15px; 
+}
+
+.inline {
+   display: inline;
+}
+
+.col-comment {
+   margin-left: -250px;
+}
+
+
+@media (min-width: 992px) { 
+   .title {
+      font-size: 21px;
+   }
+   .namaChannel, .deskripsi, .kometar  {
+      font-size: 19px;
+   }
+   .profilePic {
+      width: 110px;
+   }
+   .channel{
+      text-align: left;
+   }
+   .paragraph {
+      text-align: justify;
+      font-size: 14px;
+   }
+
+   .comment {
+      font-size: 15px; 
+   }
+   .col-comment {
+      margin-left: -960px;
+   }
+
+}
