@@ -1,13 +1,17 @@
 <?php 
 
-   // channels
-   $curl = curl_init();
-   curl_setopt($curl, CURLOPT_URL, 'https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=UClB82cRP1pkyG8-2ASbLMzQ&key=AIzaSyAR6_XQIx4NJ9uJyd9YsgCoO3L6B1PubEM');
-   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-   $result = curl_exec($curl);
-   curl_close($curl);
+   function get_CURL($url) {
+      $curl = curl_init();
+      curl_setopt($curl, CURLOPT_URL, $url);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+      $result = curl_exec($curl);
+      curl_close($curl);
 
-   $result = json_decode($result, true);
+      return json_decode($result, true);
+   }
+
+   // channel
+   $result = get_CURL('https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=UCKII0Ml9S5wneKbHswmUrIQ&key=AIzaSyAR6_XQIx4NJ9uJyd9YsgCoO3L6B1PubEM');
 
    $youtubeProfilePic = $result['items'][0]['snippet']['thumbnails']['medium']['url'];
    $channelName = $result['items'][0]['snippet']['title'];
@@ -15,17 +19,10 @@
    $description = $result['items'][0]['snippet']['description'];
 
 
-   // comments
-   $curl = curl_init();
-   curl_setopt($curl, CURLOPT_URL, 'https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=G47NkipkOXc&t=5s&key=AIzaSyAR6_XQIx4NJ9uJyd9YsgCoO3L6B1PubEM');
-   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-   $result = curl_exec($curl);
-   curl_close($curl);
+   // commentsThread
+   $result = get_CURL('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=IhV8E0BJzUk&t=5s&maxResults=100&key=AIzaSyAR6_XQIx4NJ9uJyd9YsgCoO3L6B1PubEM');
 
-   $result = json_decode($result, true);
-   $authorName = $result['items'][0]['snippet']['topLevelComment']['snippet']['authorDisplayName'];
-   $authorProfileImage = $result['items'][0]['snippet']['topLevelComment']['snippet']['authorProfileImageUrl'];
-   $comment = $result['items'][0]['snippet']['topLevelComment']['snippet']['textDisplay'];
+   $totalResults = $result['pageInfo']['totalResults']
 ?>
 
 
@@ -68,7 +65,7 @@
           
             </div>
          </div>
-
+   
          <div class="row mt-4">
             <div class="col">
                <h5 class="deskripsi">Deskripsi</h5>
@@ -79,15 +76,27 @@
          <div class="row mt-4">
             <div class="col">
                <h5 class="komentar">Komentar</h5>
-               <div class="row mt-4">
-                  <div class="col pl-4 col-img">
-                     <img class="rounded-circle img-thumbnail" style="width: 50px" src="<?= $authorProfileImage; ?>">
+
+               <?php  for($a = 0; $a <= $totalResults; $a++) {  ?>                
+                  <div class="row mt-4">
+                     <div class="col pl-4 col-img">
+                        <img 
+                           class="rounded-circle img-thumbnail" 
+                           style="width: 50px" 
+                           src="<?= $result['items'][$a]['snippet']['topLevelComment']['snippet']['authorProfileImageUrl']; ?>"
+                        >
+                     </div>
+                     <div class="col col-comment">
+                        <p class="mb-1 commentName">
+                           <?= $result['items'][$a]['snippet']['topLevelComment']['snippet']['authorDisplayName']; ?>
+                        </p>
+                        <p class="comment">
+                           <?= $result['items'][$a]['snippet']['topLevelComment']['snippet']['textDisplay']; ?>
+                        </p>
+                     </div>
                   </div>
-                  <div class="col col-comment">
-                     <p class="mb-1 commentName"><?= $authorName; ?></p>
-                     <p class="comment"><?= $comment; ?></p>
-                  </div>
-               </div>
+               <?php  } ?>
+
             </div>
          </div>
       </div>
